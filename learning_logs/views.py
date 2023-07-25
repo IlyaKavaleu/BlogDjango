@@ -1,92 +1,137 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Topic, Entry
-from .forms import TopicForm, EntryForm
+from .models import Section, Model
+from .forms import SectionForm, ModelForm
 from django.http import Http404
 
-# Create your views here.
+
 def index(request):
-    """homepage"""
+    """Homepage"""
     return render(request, 'learning_logs/index.html')
 
 
 @login_required
-def topics(request):
-    """Список тем"""
-    topics = Topic.objects.filter(owner=request.user).order_by('date_added')
-    context = {'topics': topics}
-    return render(request, 'learning_logs/topics.html', context)
+def sections(request):
+    """Get a list of topics from db related to a specific user"""
+    sections = Section.objects.filter(owner=request.user).order_by('date_added')
+    context = {'sections': sections}
+    return render(request, 'learning_logs/sections.html', context)
 
 
 @login_required
-def topic(request, topic_id):
-     """ Enter one topic and few outsides topics"""
-     topic = Topic.objects.get(id = topic_id)
-     """check that the topic belongs to the current user"""
-     if topic.owner != request.user:
-         raise Http404
-     entries = topic.entry_set.order_by('-date_added')
-     topics = Topic.objects.filter(owner=request.user).order_by('date_added')
-     context = {'topic': topic, 'entries': entries}
-     return render(request, 'learning_logs/topic.html', context)
-
-
-@login_required
-def new_topic(request):
-    """new topic creare"""
-    if request.method != 'POST':
-        #if date no send: create form
-        form = TopicForm()
-    else:
-        #Send date POST: process data
-        form = TopicForm(data=request.POST)
-        if form.is_valid():
-            new_topic = form.save(commit=False)
-            new_topic.owner = request.user
-            new_topic.save()
-            #form.save()
-            return redirect('learning_logs:topics')
-    #output an empty or invalid form
-    context = {'form': form}
-    return render(request, 'learning_logs/new_topic.html', context)
-
-
-@login_required
-def new_entry(request, topic_id):
-    """add new entry on a specific topic"""
-    topic = Topic.objects.get(id=topic_id)
-    if request.method !='POST':
-        #data no send, create entry form
-        form = EntryForm()
-    else:
-        #send data POST, process
-        form = EntryForm(data=request.POST)
-        if form.is_valid():
-            new_topic = form.save(commit=False)
-            new_topic.topic = topic
-            new_topic.save()
-            return redirect('learning_logs:topic', topic_id=topic_id)
-    #output an empty or invalid form
-    context = {'topic': topic, 'form': form}
-    return render(request, 'learning_logs/new_entry.html', context)
-
-
-@login_required
-def edit_entry(request, entry_id):
-    "edit entry"
-    entry = Entry.objects.get(id=entry_id)
-    topic = entry.topic
-
-    if topic.owner != request.user:
+def section(request, section_id):
+    """One particular topic is displayed, so an exception is thrown
+    if this topic is not owned by the current user
+    and display all messages related to the topic in reverse order"""
+    section = Section.objects.get(id=section_id)
+    if section.owner != request.user:
         raise Http404
+    models = section.model_set.order_by('-date_added')
+    context = {'section': section, 'models': models}
+    return render(request, 'learning_logs/section.html', context)
 
+
+@login_required
+def model(request, model_id):
+    model = Model.objects.get(id=model_id)
+    return render(request, 'learning_logs/model.html', {'model': model})
+
+
+@login_required
+def new_section(request):
+    """Adding new topic with help form and
+    check that the added topic is associated with the current user"""
     if request.method != 'POST':
-        form = EntryForm(instance=entry)
+        form = SectionForm()
     else:
-        #send data POST, process data
-        form = EntryForm(instance=entry, data=request.POST)
+        form = SectionForm(data=request.POST)
+        if form.is_valid():
+            new_section = form.save(commit=False)
+            new_section.owner = request.user
+            new_section.save()
+            return redirect('learning_logs:sections')
+    context = {'form': form}
+    return render(request, 'learning_logs/new_section.html', context)
+
+
+@login_required
+def new_model(request, section_id):
+    """Add an entry, do not associate with the current user,
+    since the entries are associated with topics and
+    will automatically be associated"""
+    section = Section.objects.get(id=section_id)
+    if request.method != 'POST':
+        form = ModelForm()
+    else:
+        form = ModelForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_model = form.save(commit=False)
+            new_model.section = section  # save with need topic
+            new_model.save()
+            return redirect('learning_logs:section', section_id=section_id)
+    context = {'section': section, 'form': form}
+    return render(request, 'learning_logs/new_model.html', context)
+
+
+@login_required
+def edit_model(request, model_id):
+    """We get the necessary record from the database with the necessary information,
+    if not associated with the current user, throw an exception,
+    if all checks passed, save to the database with changes
+    """
+    model = Model.objects.get(id=model_id)
+    section = model.section
+    if section.owner != request.user:
+        raise Http404
+    if request.method != 'POST':
+        form = ModelForm(instance=model)
+    else:
+        form = ModelForm(instance=model, data=request.POST)
         if form.is_valid():
             form.save()
-            return redirect('learning_logs:topic', topic_id=topic.id)
-    context = {'entry': entry, 'topic':topic, 'form':form}
-    return render(request, 'learning_logs/edit_entry.html', context)
+            return redirect('learning_logs:section', section_id=section.id)
+    context = {'model': model, 'section': section, 'form': form}
+    return render(request, 'learning_logs/edit_model.html', context)
+
+
+@login_required
+def edit_section(request, section_id):
+    """We get the necessary record from the database with the necessary information,
+    if not associated with the current user, throw an exception,
+    if all checks passed, save to the database with changes
+    """
+    section = Section.objects.get(id=section_id)
+    if section.owner != request.user:
+        raise Http404
+    if request.method != 'POST':
+        form = SectionForm(instance=section)
+    else:
+        form = SectionForm(instance=section, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('learning_logs:section', section_id=section.id)
+    context = {'section': section, 'form': form}
+    return render(request, 'learning_logs/edit_section.html', context)
+
+
+@login_required
+def delete_section(request, section_id):
+    """Ge get the topic from the database and delete it"""
+    section = Section.objects.filter(id=section_id).delete()
+    return redirect('learning_logs:sections')
+
+
+@login_required
+def delete_all_sections(request):
+    """Get the all topics from the database and delete it"""
+    section = Section.objects.all().delete()
+    return redirect('learning_logs:sections')
+
+
+@login_required
+def delete_model(request, model_id):
+    """We get the entry from the database and delete it"""
+    model = Model.objects.get(id=model_id)
+    section_id = model.section.id
+    model.delete()
+    return redirect('learning_logs:section', section_id)

@@ -1,0 +1,35 @@
+{% extends 'learning_logs/base.html' %}
+
+{% block page_header %}
+<center xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"><h1><b>Auto section</b></h1></center>
+{% endblock page_header %}
+
+{% block content %}
+<center>
+    <style>
+        .list-style-type{
+        list-style-type: None;
+        }
+    </style>
+    <ul class="list-style-type">
+        {% for section in sections %}
+            <li>
+                <div class="jumbotron">
+                <h3>
+                    <h2><a href="{% url 'learning_logs:section' section.id %}">{{ section }}</a></h2>
+                 <button class="button"><a href="{% url 'learning_logs:edit_section' section.id %}">Edit section</a></button>
+                <button class="button"><a href="{% url 'learning_logs:delete_section' section.id %}">Delete section</a></button>
+                </h3>
+                </div>
+            </li>
+        {% empty %}
+            <li><h3>No sections have been added yet.</h3></li>
+        {% endfor %}
+    </ul>
+    <button class="button">
+        <a href="{% url 'learning_logs:new_section' %}">Add a new section
+    </button>
+</center>
+{% endblock content %}
+
+

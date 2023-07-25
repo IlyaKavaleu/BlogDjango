@@ -1,0 +1,33 @@
+{% extends 'learning_logs/base.html' %}
+{% load bootstrap3 %}
+{% block page_header %}
+<center><h3><b>Section - {{ section }}</b> </h3></center>
+{% endblock page_header %}
+
+{% block content %}
+<center>
+    <p>
+        <button class="button"><a href="{% url 'learning_logs:new_model' section.id %}">Add new model for {{ section.text }}</a></button>
+    </p>
+    {% for model in models %}
+        <div class="jumbotron">
+            <div>
+                <h3><b>{{ model.name }}</b></h3>
+                <h3>Read - <b><a href="{% url 'learning_logs:model' model.id %}">{{ model.text|truncatechars:50 }}</a></b></h3>
+                <button class="button"><a href="{% url 'learning_logs:edit_model' model.id %}">Edit model</a></button>
+                <button class="button"><a href="{% url 'learning_logs:delete_model' model.id %}">Delete model</a></button>
+            </div>
+            <h4 class="card-header">
+                {{ model.date_added|date:'M d, Y H:i' }}
+            </h4>
+            <p></p>
+        </div>
+    {% empty %}
+        <p>There are no models for this section yet.</p>
+    {% endfor %}
+    </center>
+{% endblock content %}
+
+
+
+

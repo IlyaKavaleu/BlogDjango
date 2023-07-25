@@ -1,59 +1,41 @@
-{% load bootstrap4 %}
+{% load bootstrap3 %}
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Learning Log</title>
-        {% bootstrap_css %}
-        {% bootstrap_javascript jquery='full' %}
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1,
+ shrink-to-fit=no">
+<title>Learning Log</title>
 
-    </head>
 
-    <body>
-        <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
-            <a class="navbar-brand" href="{% url 'learning_logs:index' %}">Learning Log</a>
+{% bootstrap_css %} {% bootstrap_javascript jquery='full' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/file_with_css.css' %}" type="text/css">
+</head>
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarCollapse" aria-controls="navbarCollapse"
-                    aria-expanded="false" aria_label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span></button>
-
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'learning_logs:topics' %}">
-                            Topics</a></li>
-                </ul>
-                <ul class="navbar-nav ml-auto">
-                    {% if user.is_authenticated %}
-                      <li class="nav-item">
-                          <span class="navbar-text">Hello, {{ user.username }}.</span>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'users:logout' %}">Log out</a>
-                      </li>
-                    {% else %}
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'users:register' %}">Register</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="{% url 'users:login' %}">Log in</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </nav>
-
-        <main role="main" class="container">
-            <div class="pb-2 mb-2 border-bottom">
-                {% block page_header %}{% endblock page_header %}
-            </div>
-           <div>
-               {% block content %}{% endblock content %}
-           </div>
-        </main>
-    </body>
+<body>
+<nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
+    <a class="navbar-brand" href="{% url 'learning_logs:index' %}"><strong>Auto magazine</strong></a>
+    <a class="navbar-brand" href="{% url 'learning_logs:sections' %}">Auto section</a>
+    {% if user.is_authenticated %}
+    <span class="navbar-brand">Hello, {{ user.username }}.</span>
+    <a class="navbar-brand" href="{% url 'users:logout' %}">Log out</a>
+    {% else %}
+    <a class="navbar-brand" href="{% url 'users:register' %}">Register</a>
+    <a class="navbar-brand" href="{% url 'users:login' %}">Log in</a>
+    {% endif %}
+</nav>
+<main role="main" class="container">
+    <div class="pb-2 mb-2 border-bottom">
+        {% block page_header %}{% endblock page_header %}
+    </div>
+    <div>
+        {% block content %}{% endblock content %}
+    </div>
+</main>
+</body>
 </html>
+
 
 
 
