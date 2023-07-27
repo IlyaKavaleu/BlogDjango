@@ -1,25 +1,28 @@
-To Do Woo
-How started my project on your local server?
-The project for study Django.<
+<h1>Learning Log</h1>
+<h3>How started my project on your local server?</h3>
+The project for study Django.
 
-Stack:
+<h3>Stack:</h3>
 - Python - SqLite - Redis - Local Developing All actions should be executed from the source directory of the project and only after installing all requirements.
 Firstly, create and activate a new virtual environment:
 python3.9 -m venv ../venv source ../venv/bin/activate
 
-Install packages:
+<h3>nstall packages:</h3>
 pip install --upgrade pip
 
 pip install -r requirements.txt
 
-Run project dependencies, migrations, fill the database with the fixture data etc.:
-./manage.py migrate ./manage.py loaddata <path_to_fixture_files>
+<h3>Run project dependencies, migrations.
 
-Run Redis Server:
+<h3>Run Redis Server:</h3>
 redis-server
-Run Celery:
+
+<h3>Run Celery:</h3>
 celery -A store worker --loglevel=INFO
-After completing the steps follow the link -- http://127.0.0.1:8000/
+
+<h3>After completing the steps follow the link -- http://127.0.0.1:8000</h3>
+
+  
 ToDoWoo for tasks.
 The “to do woo” program is designed to create a list of tasks. The program helps to manage to-do lists, implement planned tasks and not forget anything. The user has the ability to create a list of tasks, in the process of their execution, can change, delete, complete. The program is implemented in the Python programming language using:
 Django;
