@@ -49,10 +49,10 @@ CSS;
 6. - By clicking on the model of interest to us on the previous page, we go to the page of this model where we can view it, edit it or delete it.
      ![model_6](https://github.com/IlyaKavaleu/BlogDjango/assets/97099564/d54f6df9-92ab-4ecf-bb1c-4f5e230e39e3)
 
-7. - Сlick to go to the model of interest to us.
+7. - Сlick to go to the model of interest to us. Example Bugatti Chiron.
      ![gotomodel_7](https://github.com/IlyaKavaleu/BlogDjango/assets/97099564/ebefbf75-ebd1-4501-9dd7-62799596c1c5)
 
-8. - Out model.
+8. - Our model.
      ![ourmodel_8](https://github.com/IlyaKavaleu/BlogDjango/assets/97099564/1ccf8d87-5bb2-46c1-9281-1d7be1ae8ce8)
 
 9. - Also we can edit model.
