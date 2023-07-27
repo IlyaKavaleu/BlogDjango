@@ -46,4 +46,20 @@ CSS;
 5. - If we click to "Auto Sections" we get to the car categories page. Here I already have added cars.
      ![sections_5](https://github.com/IlyaKavaleu/BlogDjango/assets/97099564/d3afd303-d91e-488c-8136-c32d1be9275c)
 
-6. - 
+6. - By clicking on the model of interest to us on the previous page, we go to the page of this model where we can view it, edit it or delete it.
+     ![model_6](https://github.com/IlyaKavaleu/BlogDjango/assets/97099564/d54f6df9-92ab-4ecf-bb1c-4f5e230e39e3)
+
+7. - Сlick to go to the model of interest to us.
+     ![gotomodel_7](https://github.com/IlyaKavaleu/BlogDjango/assets/97099564/ebefbf75-ebd1-4501-9dd7-62799596c1c5)
+
+8. - Out model.
+     ![ourmodel_8](https://github.com/IlyaKavaleu/BlogDjango/assets/97099564/1ccf8d87-5bb2-46c1-9281-1d7be1ae8ce8)
+
+9. - Also we can edit model.
+![editmodel_9](https://github.com/IlyaKavaleu/BlogDjango/assets/97099564/0ce62519-be39-4e32-affc-67216a9ce452)
+
+10. - Or section.
+    ![editsection_10](https://github.com/IlyaKavaleu/BlogDjango/assets/97099564/1cd9076e-3341-41c2-8e9a-8a89526df285)
+
+11. - After we can click "Logout" and go to the logout page.
+    ![logged_out_11](https://github.com/IlyaKavaleu/BlogDjango/assets/97099564/02024e87-45f3-4fb0-aa30-54e9ebd3ee2c)
