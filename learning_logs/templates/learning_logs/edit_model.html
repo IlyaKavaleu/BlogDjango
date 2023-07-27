@@ -6,12 +6,12 @@
 
 {% block content %}
     <p>
-        <h3><b><a href="{% url 'learning_logs:section' section.id %}">{{ section }}</a></b></h3>
+        <h3><b><a href="{% url 'learning_logs:section' section.id %}" style="color: black">{{ section }}</a></b></h3>
     </p>
 
     <form action="{% url 'learning_logs:edit_model' model.id %}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       {% bootstrap_form form %}
-        <button class="button">Save change</button>
+        <button class="button" style="color: black">Save change</button>
     </form>
 {% endblock content %}

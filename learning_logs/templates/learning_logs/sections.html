@@ -5,31 +5,35 @@
 {% endblock page_header %}
 
 {% block content %}
+<body>
 <center>
     <style>
         .list-style-type{
         list-style-type: None;
         }
     </style>
+    {% if sections %}
     <ul class="list-style-type">
         {% for section in sections %}
             <li>
-                <div class="jumbotron">
-                <h3>
-                    <h2><a href="{% url 'learning_logs:section' section.id %}">{{ section }}</a></h2>
-                 <button class="button"><a href="{% url 'learning_logs:edit_section' section.id %}">Edit section</a></button>
-                <button class="button"><a href="{% url 'learning_logs:delete_section' section.id %}">Delete section</a></button>
-                </h3>
+                <div class="jumbotron" style="width: 500px; height: 200px;">
+                    <h3>
+                        <h2 style="color: black"><a href="{% url 'learning_logs:section' section.id %}" style="color: black"><b>{{ section }}</b></a></h2>
+                     <button class="button"><a href="{% url 'learning_logs:edit_section' section.id %}" style="color: black">Edit section</a></button>
+                    <button class="button"><a href="{% url 'learning_logs:delete_section' section.id %}" style="color: black">Delete section</a></button>
+                    </h3>
                 </div>
             </li>
         {% empty %}
-            <li><h3>No sections have been added yet.</h3></li>
+            <li><h3 style="color: black">No sections have been added yet.</h3></li>
         {% endfor %}
     </ul>
+    {% endif %}
     <button class="button">
-        <a href="{% url 'learning_logs:new_section' %}">Add a new section
+        <a href="{% url 'learning_logs:new_section' %}" style="color: black">Add a new section
     </button>
 </center>
+</body>
 {% endblock content %}
 
 

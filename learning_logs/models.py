@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Section(models.Model):
-    """Model of the theme being created"""
+    """Model Section of the theme being created"""
     text = models.CharField(max_length=200)
     date_added = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -14,7 +14,7 @@ class Section(models.Model):
 
 
 class Model(models.Model):
-    """Model of the entry being related to the topic"""
+    """Model with name Model of the model being related to the Section"""
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, blank=False, null=True)
     text = models.TextField(max_length=5000, blank=False, null=True)

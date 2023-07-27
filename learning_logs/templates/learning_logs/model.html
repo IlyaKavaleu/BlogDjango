@@ -6,8 +6,8 @@
 {% block content%}
     <center><div class="card-body" id="jumbotron">
         <p><h1><b>{{ model.name }}</b></h1></p>
-        <p><h3>{{ model.text }}</h3></p>
-        <img src="{{ model.image.url }}" class="img-responsive" style="width: 50%; float: center; margin-right: 10px;" />
+        <p><h3><mark style="background-color: white">{{ model.text }}</mark></h3></p>
+        <img src="{{ model.image.url }}" class="img-responsive" style="width: 65%; float: center; margin-right: 10px;" />
     </div></center>
 {% endblock content%}
 </body>

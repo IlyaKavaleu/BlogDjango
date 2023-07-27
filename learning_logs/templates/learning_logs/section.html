@@ -1,33 +1,69 @@
 {% extends 'learning_logs/base.html' %}
 {% load bootstrap3 %}
 {% block page_header %}
-<center><h3><b>Section - {{ section }}</b> </h3></center>
+<center><h3 class="sliding-button"><b>Section - {{ section }}</b> </h3></center>
 {% endblock page_header %}
 
 {% block content %}
 <center>
     <p>
-        <button class="button"><a href="{% url 'learning_logs:new_model' section.id %}">Add new model for {{ section.text }}</a></button>
+        <button class="button"><a href="{% url 'learning_logs:new_model' section.id %}" style="color: black">Add new model for {{ section.text }}</a></button>
     </p>
     {% for model in models %}
         <div class="jumbotron">
             <div>
-                <h3><b>{{ model.name }}</b></h3>
-                <h3>Read - <b><a href="{% url 'learning_logs:model' model.id %}">{{ model.text|truncatechars:50 }}</a></b></h3>
-                <button class="button"><a href="{% url 'learning_logs:edit_model' model.id %}">Edit model</a></button>
-                <button class="button"><a href="{% url 'learning_logs:delete_model' model.id %}">Delete model</a></button>
+                <h3><b><a href="{% url 'learning_logs:model' model.id %}" style="color: black"><img src="/media/arrow.png" width="30" height="30"> {{ model.name }}</a></b></h3>
+                <h3 style="color: black"><b>{{ model.text|truncatechars:100 }}</b></h3>
+                <button class="button"><a href="{% url 'learning_logs:edit_model' model.id %}" style="color: black">Edit model</a></button>
+                <button class="button"><a href="{% url 'learning_logs:delete_model' model.id %}" style="color: black">Delete model</a></button>
             </div>
-            <h4 class="card-header">
+            <h4 class="card-header" style="color: black">
                 {{ model.date_added|date:'M d, Y H:i' }}
             </h4>
             <p></p>
         </div>
     {% empty %}
-        <p>There are no models for this section yet.</p>
+        <p style="color: black">There are no models for this section yet.</p>
     {% endfor %}
     </center>
+
+
+<style>
+    .sliding-button {
+      text-decoration: none;
+      color: white;
+      display: inline-block;
+      position: relative;
+      padding: 15px 30px;
+      border: 1px solid;
+      border-image: linear-gradient(180deg, #ff3000, #ed0200, #ff096c, #d50082);
+      border-image-slice: 1;
+      margin: 10px 20px;
+      font-family: 'Montserrat', sans-serif;
+      text-transform: uppercase;
+      overflow: hidden;
+      letter-spacing: 2px;
+      transition: .8s cubic-bezier(.165, .84, .44, 1);
+    }
+    .sliding-button:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 0;
+      width: 100%;
+      z-index: -1;
+      color: white;
+      background: linear-gradient(180deg, #ff3000, #ed0200, #ff096c, #d50082);
+      transition: .8s cubic-bezier(.165, .84, .44, 1);
+    }
+    .sliding-button:hover {
+      background: rgba(255, 255, 255, 0);
+    }
+    .sliding-button:hover:before {
+      bottom: 0%;
+      top: auto;
+      height: 100%;
+    }
+</style>
 {% endblock content %}
-
-
-
-

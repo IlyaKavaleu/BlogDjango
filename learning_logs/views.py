@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Section, Model
 from .forms import SectionForm, ModelForm
 from django.http import Http404
+from django.core.cache import cache
 
 
 def index(request):
@@ -12,17 +13,22 @@ def index(request):
 
 @login_required
 def sections(request):
-    """Get a list of topics from db related to a specific user"""
-    sections = Section.objects.filter(owner=request.user).order_by('date_added')
+    """Get a list of sections from db related to a specific user"""
+    sections = cache.get('sections')
+    if not sections:
+        sections = Section.objects.filter(owner=request.user).order_by('date_added')
+        cache.set('sections', sections, 5)
+    else:
+        sections = cache.get('sections')
     context = {'sections': sections}
     return render(request, 'learning_logs/sections.html', context)
 
 
 @login_required
 def section(request, section_id):
-    """One particular topic is displayed, so an exception is thrown
-    if this topic is not owned by the current user
-    and display all messages related to the topic in reverse order"""
+    """One particular section is displayed, so an exception is thrown
+    if this section is not owned by the current user
+    and display all messages related to the section in reverse order"""
     section = Section.objects.get(id=section_id)
     if section.owner != request.user:
         raise Http404
@@ -33,14 +39,15 @@ def section(request, section_id):
 
 @login_required
 def model(request, model_id):
+    """We get one specific model"""
     model = Model.objects.get(id=model_id)
     return render(request, 'learning_logs/model.html', {'model': model})
 
 
 @login_required
 def new_section(request):
-    """Adding new topic with help form and
-    check that the added topic is associated with the current user"""
+    """Adding new section with help form and
+    check that the added section is associated with the current user"""
     if request.method != 'POST':
         form = SectionForm()
     else:
@@ -56,8 +63,8 @@ def new_section(request):
 
 @login_required
 def new_model(request, section_id):
-    """Add an entry, do not associate with the current user,
-    since the entries are associated with topics and
+    """Add an model, do not associate with the current user,
+    since the models are associated with sections and
     will automatically be associated"""
     section = Section.objects.get(id=section_id)
     if request.method != 'POST':
@@ -75,7 +82,7 @@ def new_model(request, section_id):
 
 @login_required
 def edit_model(request, model_id):
-    """We get the necessary record from the database with the necessary information,
+    """We get the necessary model from the database with the necessary information,
     if not associated with the current user, throw an exception,
     if all checks passed, save to the database with changes
     """
@@ -96,7 +103,7 @@ def edit_model(request, model_id):
 
 @login_required
 def edit_section(request, section_id):
-    """We get the necessary record from the database with the necessary information,
+    """We get the necessary section from the database with the necessary information,
     if not associated with the current user, throw an exception,
     if all checks passed, save to the database with changes
     """
@@ -116,22 +123,23 @@ def edit_section(request, section_id):
 
 @login_required
 def delete_section(request, section_id):
-    """Ge get the topic from the database and delete it"""
+    """We get the section from the database and delete it"""
     section = Section.objects.filter(id=section_id).delete()
     return redirect('learning_logs:sections')
 
 
 @login_required
 def delete_all_sections(request):
-    """Get the all topics from the database and delete it"""
+    """Get the all sections from the database and delete it"""
     section = Section.objects.all().delete()
     return redirect('learning_logs:sections')
 
 
 @login_required
 def delete_model(request, model_id):
-    """We get the entry from the database and delete it"""
+    """We get the model from the database and delete it"""
     model = Model.objects.get(id=model_id)
     section_id = model.section.id
     model.delete()
     return redirect('learning_logs:section', section_id)
+
